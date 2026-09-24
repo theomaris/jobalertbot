@@ -1,0 +1,27 @@
+{
+  "_comment": "Domeniile de la care accepta email-uri de alerta job, si cuvinte care trebuie sa apara in subiect ca sa fie procesat (impotriva newsletter-elor generale). Lasa lista de subiect goala [] ca sa accepte orice email de la domeniul respectiv.",
+  "surse_email": [
+    {
+      "nume": "LinkedIn",
+      "domenii_expeditor": ["linkedin.com"],
+      "subiect_contine_unul_din": ["job alert", "locuri de munca noi", "new jobs", "jobs for you"]
+    },
+    {
+      "nume": "eJobs",
+      "domenii_expeditor": ["ejobs.ro"],
+      "subiect_contine_unul_din": []
+    },
+    {
+      "nume": "BestJobs",
+      "domenii_expeditor": ["bestjobs.eu", "bestjobs.ro"],
+      "subiect_contine_unul_din": []
+    }
+  ],
+  "_comment_link_domenii": "Domeniile catre care un link din email e considerat 'link de job' (ca sa ignoram linkuri de unsubscribe, social media etc.)",
+  "domenii_job_valide": [
+    "linkedin.com/jobs",
+    "ejobs.ro",
+    "bestjobs.eu",
+    "bestjobs.ro"
+  ]
+}

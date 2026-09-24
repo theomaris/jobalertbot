@@ -1,0 +1,25 @@
+{
+  "_comment": "Adauga/sterge cuvinte cheie dupa domeniile care te intereseaza. Foloseste liniuta '-' in loc de spatiu.",
+  "keywords": [
+    "Mecatronica",
+    "Robotica",
+    "Automatizari",
+    "Inginer-Mecanic",
+    "Electromecanic",
+    "Tehnician-Automatist",
+    "PLC",
+    "Inginer-Electric"
+  ],
+  "_comment_orase": "Orasele din lista Hipo.ro care te intereseaza (Bucuresti + zona limitrofa).",
+  "orase": [
+    "BUCURESTI",
+    "Ilfov",
+    "Otopeni",
+    "Voluntari",
+    "Popesti-Leordeni",
+    "Chitila",
+    "Buftea"
+  ],
+  "_comment_pagini": "Cate pagini de rezultate sa verifice per cautare (30 joburi/pagina, de obicei 1-2 e suficient).",
+  "pagini_de_verificat": 2
+}
