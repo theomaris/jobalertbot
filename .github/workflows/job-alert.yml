@@ -1,0 +1,47 @@
+name: Job Alert Bot
+
+on:
+  schedule:
+    # Ruleaza la fiecare ora, in minutul 0 (ora UTC; Romania = UTC+2/+3)
+    - cron: "0 * * * *"
+  workflow_dispatch: {}  # permite si rulare manuala din tab-ul "Actions"
+
+permissions:
+  contents: write  # ca sa poata salva seen_jobs.json inapoi in repo
+
+jobs:
+  check-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instaleaza dependinte
+        run: pip install -r requirements.txt
+
+      - name: Ruleaza botul (Hipo.ro)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python job_bot.py
+
+      - name: Ruleaza botul (LinkedIn / eJobs / BestJobs prin email)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python email_alerts_bot.py
+
+      - name: Salveaza starea (commit automat)
+        run: |
+          git config user.name "job-alert-bot"
+          git config user.email "actions@github.com"
+          git add seen_jobs.json seen_email_jobs.json
+          git diff --quiet --cached || git commit -m "Actualizeaza lista de joburi vazute"
+          git push
