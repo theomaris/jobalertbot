@@ -1,47 +1,7 @@
 {
-  "_comment": "Cuvinte cheie cautate pe Hipo.ro. Foloseste liniuta '-' in loc de spatiu.",
-  "keywords": [
-    "Mecatronica",
-    "Mechatronics",
-    "Robotica",
-    "Robotics",
-    "Automatizari",
-    "Automation",
-    "Inginer-Mecanic",
-    "Mechanical-Engineer",
-    "Design-Engineer",
-    "Design-Engineer-Mechanical",
-    "Product-Engineer",
-    "Project-Engineer",
-    "R&D-Engineer",
-    "Inginer-Electric",
-    "Electrical-Engineer",
-    "Electromecanic",
-    "Electromechanical",
-    "Tehnician-Automatist",
-    "Automation-Technician",
-    "PLC",
-    "PLC-Programmer",
-    "SCADA",
-    "CAD-Engineer",
-    "CAD-Designer",
-    "SolidWorks",
-    "CATIA",
-    "Inventor",
-    "AutoCAD",
-    "CNC",
-    "CNC-Programmer",
-    "Mentenanta",
-    "Maintenance-Engineer",
-    "Industrial-Engineer",
-    "Proces-Engineer",
-    "Process-Engineer",
-    "Manufacturing-Engineer",
-    "Production-Engineer",
-    "Test-Engineer",
-    "Quality-Engineer",
-    "Embedded-Engineer",
-    "Hardware-Engineer"
+  "_comment": "Domeniile Hipo in care cautam. Inginerie = mecanica, electrica, mecatronica, automatizari.",
+  "domenii": [
+    "Inginerie"
   ],
   "_comment_orase": "Orasele din lista Hipo.ro care te intereseaza.",
   "orase": [
@@ -53,6 +13,8 @@
     "Chitila",
     "Buftea"
   ],
+  "_comment_filtru": "Filtru de experienta din URL-ul Hipo. Student--Absolvent = Student/Absolvent, 0-1-an-experienta = 0-1 ani experienta.",
+  "filtru_experienta": "Student--Absolvent,0-1-an-experienta",
   "_comment_pagini": "Cate pagini de rezultate sa verifice per cautare.",
-  "pagini_de_verificat": 1
+  "pagini_de_verificat": 2
 }
