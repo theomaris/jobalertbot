@@ -1,7 +1,7 @@
 """
 Bot de alerta joburi -> Telegram (Hipo.ro)
-Cauta periodic joburi noi dupa cuvintele cheie si orasele din config.json
-si trimite pe Telegram doar joburile noi.
+Cauta joburi entry-level (Student/Absolvent, 0-1 an experienta)
+in domeniul Inginerie, pe orasele din config.json.
 """
 
 import json
@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
 SEEN_PATH = BASE_DIR / "seen_jobs.json"
 
-HIPO_BASE = "https://www.hipo.ro/locuri-de-munca/cautajob/Toate-Domeniile"
+HIPO_BASE = "https://www.hipo.ro/locuri-de-munca/cautajobfiltre"
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -53,8 +54,7 @@ def titlu_e_valid(title):
         return False
     if t in TITLU_INVALID:
         return False
-    cuvinte = t.split()
-    if all(w in CUVINTE_GENERICE for w in cuvinte):
+    if all(w in CUVINTE_GENERICE for w in t.split()):
         return False
     return True
 
@@ -76,16 +76,16 @@ def save_seen(seen_ids):
         json.dump(sorted(seen_ids), f, ensure_ascii=False, indent=2)
 
 
-def build_url(keyword, oras, page):
-    kw = quote(keyword)
-    url = f"{HIPO_BASE}/{oras}/{kw}"
+def build_url(domeniu, oras, filtru_experienta, page):
+    """Construieste URL-ul de cautare Hipo cu filtre."""
+    url = f"{HIPO_BASE}/{domeniu}/{oras}/{filtru_experienta}/"
     if page > 1:
-        url += f"/{page}"
+        url += f"?pagina={page}"
     return url
 
 
-def fetch_jobs(keyword, oras, page):
-    url = build_url(keyword, oras, page)
+def fetch_jobs(domeniu, oras, filtru_experienta, page):
+    url = build_url(domeniu, oras, filtru_experienta, page)
     try:
         resp = requests.get(url, headers=HEADERS, timeout=20)
         resp.raise_for_status()
@@ -146,21 +146,27 @@ def send_telegram_message(text):
 def main():
     config = load_config()
     seen = load_seen()
-    keywords = config["keywords"]
-    orase = config["orase"]
-    max_pages = config.get("pagini_de_verificat", 1)
 
-    print(f"Cuvinte cheie: {len(keywords)}")
+    domenii = config.get("domenii", ["Inginerie"])
+    orase = config["orase"]
+    filtru_experienta = config.get(
+        "filtru_experienta",
+        "Student--Absolvent,0-1-an-experienta"
+    )
+    max_pages = config.get("pagini_de_verificat", 2)
+
+    print(f"Domenii: {domenii}")
     print(f"Orase: {orase}")
+    print(f"Filtru experienta: {filtru_experienta}")
     print(f"Joburi cunoscute deja: {len(seen)}")
 
     new_jobs = {}
 
-    for keyword in keywords:
+    for domeniu in domenii:
         for oras in orase:
             for page in range(1, max_pages + 1):
-                print(f"-> Caut '{keyword}' in '{oras}', pagina {page}...")
-                jobs = fetch_jobs(keyword, oras, page)
+                print(f"-> Caut '{domeniu}' in '{oras}', pagina {page}...")
+                jobs = fetch_jobs(domeniu, oras, filtru_experienta, page)
                 if not jobs:
                     break
                 for job in jobs:
